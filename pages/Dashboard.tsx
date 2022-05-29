@@ -27,7 +27,7 @@ const Dashboard: NextPage = ({session, userID, tweetCount}: any) => {
 
     const GetUserTweets = async () => {
         try { 
-            const url = `https://twitter-nuker.vercel.app/api/twitter/getTweeters/${userID}`
+            const url = `http://localhost:3000/api/twitter/getTweeters/${userID}`
             const res = await fetch(url, {
                 headers: {
                     "Content-Type": "application/json",
@@ -43,23 +43,6 @@ const Dashboard: NextPage = ({session, userID, tweetCount}: any) => {
             tweetArray.forEach(twit => {
                 console.log(twit.id);
             })
-        } catch (error) {
-            console.log(error)
-        }          
-    }
-
-    const CountTweets = async () => {
-        try { 
-            const url = `https://twitter-nuker.vercel.app/api/twitter/userTweetCount/${userID}`
-            const res = await fetch(url, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                method:"GET",        
-            })
-
-            const result = await res.json();
-            console.log(result);
         } catch (error) {
             console.log(error)
         }          
@@ -95,10 +78,11 @@ export const getServerSideProps: GetServerSideProps = async(context) =>{
     const sesh = await getSession(context);
     let userID = sesh?.user?.id;
 
-    const url = `https://twitter-nuker.vercel.app/api/twitter/userTweetCount/${userID}`
+    const url = `http://localhost:3000/api/twitter/userTweetCount/${userID}`
     const res = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
+            "authorization": `Bearer ${process.env.TWITTER_BEARER_TOKEN}`
         },
         method:"GET",        
     })
