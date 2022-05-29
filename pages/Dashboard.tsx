@@ -27,7 +27,7 @@ const Dashboard: NextPage = ({session, userID, tweetCount}: any) => {
 
     const GetUserTweets = async () => {
         try { 
-            const url = `http://localhost:3000/api/twitter/getTweeters/${userID}`
+            const url = `https://twitter-nuker.vercel.app/api/twitter/getTweeters/${userID}`
             const res = await fetch(url, {
                 headers: {
                     "Content-Type": "application/json",
@@ -50,7 +50,7 @@ const Dashboard: NextPage = ({session, userID, tweetCount}: any) => {
 
     const CountTweets = async () => {
         try { 
-            const url = `http://localhost:3000/api/twitter/userTweetCount/${userID}`
+            const url = `https://twitter-nuker.vercel.app/api/twitter/userTweetCount/${userID}`
             const res = await fetch(url, {
                 headers: {
                     "Content-Type": "application/json",
@@ -68,19 +68,23 @@ const Dashboard: NextPage = ({session, userID, tweetCount}: any) => {
     
     return (
         <div>
-              {status === "loading" ? <div>Loading...</div> :
-                                      <div> 
-                                          <div>
-                                          LOGGED IN AS: {userID}
-                                          </div>
-                                          <div>
-                                            NUMBER OF TWEETS TO BE DELETED: {tweetCount.data}
-                                          </div>
-                                          <div>
-                                              <Button onClick={() => GetUserTweets()}>Fetch Tweets</Button>
-                                          </div>
-                                      </div> 
-                                    
+              {status === "loading" 
+              ? 
+                <div>
+                    Loading...
+                </div>              
+                :
+                <div> 
+                    <div>
+                        LOGGED IN AS: {userID}
+                    </div>
+                    <div>
+                        NUMBER OF TWEETS TO BE DELETED: {tweetCount.data}
+                    </div>
+                    <div>
+                        <Button onClick={() => GetUserTweets()}>Fetch Tweets</Button>
+                    </div>
+                </div>                                     
               }     
         </div>
     )
@@ -91,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async(context) =>{
     const sesh = await getSession(context);
     let userID = sesh?.user?.id;
 
-    const url = `http://localhost:3000/api/twitter/userTweetCount/${userID}`
+    const url = `https://twitter-nuker.vercel.app/api/twitter/userTweetCount/${userID}`
     const res = await fetch(url, {
         headers: {
             "Content-Type": "application/json",
